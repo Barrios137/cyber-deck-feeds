@@ -1,0 +1,48 @@
+# GitHub Action del espejo de avisos de Cyber Deck. Vive en .github/workflows/mirror.yml del repo
+# público https://github.com/Barrios137/cyber-deck-feeds, junto con mirror.py en la raíz; la copia
+# de trabajo está en dev/cyber-deck/news-mirror.yml del repositorio de los widgets (idénticas).
+# El widget lee https://raw.githubusercontent.com/Barrios137/cyber-deck-feeds/main/feeds.json (CORS *).
+# Sólo publica título, enlace, fecha, fuente y etiqueta de fuentes de dominio público (CISA).
+name: mirror
+on:
+  schedule:
+    - cron: "23 */2 * * *"   # cada 2 h, minuto 23 (lejos de la congestión del minuto 0)
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+concurrency: mirror
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Leer los feeds de CISA
+        id: parse
+        run: python -I mirror.py --out feeds.json
+        continue-on-error: true
+      - name: Publicar si cambió
+        if: steps.parse.outcome == 'success'
+        run: |
+          git config user.name "cyber-deck-feeds mirror"
+          git config user.email "legal@simple-code.cloud"
+          if ! git diff --quiet -- feeds.json; then
+            git add feeds.json
+            git commit -m "feeds $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi
+      - name: Avisar si la lectura falló
+        if: steps.parse.outcome != 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = "El espejo no pudo leer los feeds de CISA";
+            const open = await github.rest.issues.listForRepo({ owner: context.repo.owner, repo: context.repo.repo, state: "open", labels: "mirror" });
+            if (!open.data.some(i => i.title === title)) {
+              await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, labels: ["mirror"],
+                body: `Fallo en ${new Date().toISOString()}. feeds.json conserva la última versión buena; el widget enseña la antigüedad de cada titular.` });
+            }
