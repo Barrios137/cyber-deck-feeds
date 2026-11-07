@@ -1,24 +1,27 @@
 #!/usr/bin/env python3
-"""Espejo de avisos públicos para Cyber Deck (vista «Noticias»).
+"""Espejo de avisos públicos de CISA para Cyber Deck (vista «Noticias»).
 
-Las fuentes de dominio público no mandan CORS, así que el widget no puede leerlas
-directamente. Este script es el corazón del espejo público
-https://github.com/Barrios137/cyber-deck-feeds (creado el 7 de noviembre de 2026), donde
-vive como ``mirror.py``: su GitHub Action (``.github/workflows/mirror.yml``) lo ejecuta cada
-2 h y publica ``feeds.json``, que el widget pide a
-https://raw.githubusercontent.com/Barrios137/cyber-deck-feeds/main/feeds.json (CORS ``*``).
+El widget no puede leer las fuentes de CISA directamente (no mandan CORS). Este script es el
+corazón del espejo público https://github.com/Barrios137/cyber-deck-feeds (creado el 7 de
+noviembre de 2026), donde vive como ``mirror.py``: su GitHub Action
+(``.github/workflows/mirror.yml``) lo ejecuta cada 2 h y publica ``feeds.json``, que el widget
+pide a https://raw.githubusercontent.com/Barrios137/cyber-deck-feeds/main/feeds.json (CORS ``*``).
 La copia de trabajo está en el repositorio de los widgets, en ``dev/cyber-deck/news-mirror.py``:
 las dos se mantienen idénticas.
 
-Fuentes (medidas el 28 de octubre de 2026):
-  - CISA, todos los avisos: https://www.cisa.gov/cybersecurity-advisories/all.xml
-    (unos 6 MB, casi todo descripciones; se quedan los 60 más recientes)
-  - CISA, noticias: https://www.cisa.gov/news.xml
-CISA publica obra del Gobierno de EE. UU., de dominio público (17 U.S.C. § 105). No se
-usa su logotipo ni se insinúa respaldo.
+Fuentes: los repositorios de datos oficiales de CISA en GitHub. Los RSS de cisa.gov
+(``cybersecurity-advisories/all.xml`` y ``news.xml``) responden 403 a los servidores de las
+GitHub Actions (medido el 7 de noviembre de 2026), y no se disfrazan las peticiones para
+saltarse ese bloqueo.
+  - Avisos ICS y de vulnerabilidades en CSAF: https://github.com/cisagov/CSAF
+    (``csaf_files/{OT,IT}/white/<año>/*.json``; se leen los 40 más recientes).
+  - Catálogo KEV: https://github.com/cisagov/kev-data (CC0 1.0); una entrada por día de altas.
+El contenido de CISA es obra del Gobierno de EE. UU., de dominio público (17 U.S.C. § 105).
+No se usa su logotipo ni se insinúa respaldo.
 
-Del feed sólo salen **título, enlace, fecha, fuente y etiqueta**: ni descripciones, ni
-imágenes, ni autores. Sólo biblioteca estándar.
+Del aviso sólo salen **título, enlace, fecha, fuente y etiqueta**: ni descripciones, ni
+puntuaciones. Sólo biblioteca estándar. En la Action, ``GITHUB_TOKEN`` autentica la única
+llamada a la API de GitHub (el árbol del repositorio CSAF).
 
 Uso:
     python -I mirror.py                    # escribe feeds.json junto al script
@@ -29,26 +32,24 @@ Uso:
 Salida:
     {
       "v": 1,
-      "generated": "2026-10-28T09:00:00Z",
+      "generated": "2026-11-07T09:00:00Z",
       "sources": {"cisa": {"name": "CISA", "lang": "en", "home": "https://www.cisa.gov/",
-                           "license": "Public domain (17 U.S.C. § 105)"}},
-      "items": [{"title": "...", "link": "https://www.cisa.gov/...", "date": "2026-10-27T12:00:00Z",
+                           "license": "Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},
+      "items": [{"title": "...", "link": "https://www.cisa.gov/...", "date": "2026-11-03T06:00:00Z",
                  "source": "cisa", "tag": "ics"}, ...]
     }
-Etiquetas: alert, advisory, ics, medical, analysis, news, resource y other. Si el contenido
-no cambia, ``generated`` conserva el valor del archivo anterior para que la Action no haga
-un commit vacío. El código de salida es 1 si una fuente falla o el resultado no supera las
-comprobaciones mínimas: la Action no publica y el widget sigue con el último JSON bueno.
+Etiquetas: ics (ICSA), medical (ICSMA), advisory (VA y demás) y alert (altas en el KEV). Si el
+contenido no cambia, ``generated`` conserva el valor del archivo anterior para que la Action
+no haga un commit vacío. El código de salida es 1 si una fuente falla o el resultado no supera
+las comprobaciones mínimas: la Action no publica y el widget sigue con el último JSON bueno.
 """
 import argparse
 import datetime as dt
-import email.utils
-import html
 import json
+import os
 import re
 import sys
 import urllib.request
-import xml.etree.ElementTree as ET
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -57,108 +58,146 @@ if HERE.name == "cyber-deck" and HERE.parent.name == "dev":
 	DEFAULT_OUT = HERE.parents[1] / "dev" / "cache" / "cyber-deck" / "feeds.json"
 else:
 	DEFAULT_OUT = HERE / "feeds.json"
-USER_AGENT = "cyber-deck-feeds/0.1 (+https://simple-code.cloud; legal@simple-code.cloud)"
+USER_AGENT = "cyber-deck-feeds/0.2 (+https://github.com/Barrios137/cyber-deck-feeds; legal@simple-code.cloud)"
 
 SOURCES = {
 	"cisa": {
 		"name": "CISA",
 		"lang": "en",
 		"home": "https://www.cisa.gov/",
-		"license": "Public domain (17 U.S.C. § 105)",
+		"license": "Public domain (17 U.S.C. § 105); KEV data CC0 1.0",
 	},
 }
 
-FEEDS = [
-	{"url": "https://www.cisa.gov/cybersecurity-advisories/all.xml", "source": "cisa", "keep": 60, "min": 5},
-	{"url": "https://www.cisa.gov/news.xml", "source": "cisa", "keep": 20, "min": 1},
-]
+CSAF_TREE = "https://api.github.com/repos/cisagov/CSAF/git/trees/develop?recursive=1"
+CSAF_RAW = "https://raw.githubusercontent.com/cisagov/CSAF/develop/"
+KEV_JSON = "https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json"
+KEV_PAGE = "https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
 
-# Primer tramo de la ruta tras /news-events/ → etiqueta del widget.
-TAGS = {
-	"alerts": "alert",
-	"cybersecurity-advisories": "advisory",
-	"ics-advisories": "ics",
-	"ics-medical-advisories": "medical",
-	"analysis-reports": "analysis",
-	"news": "news",
-	"blogs": "news",
-}
+ADVISORIES_KEEP = 40   # avisos CSAF más recientes
+ADVISORIES_MIN = 10
+KEV_DAYS = 45          # días de altas en el KEV que se resumen
+TOTAL_KEEP = 60
+
 LINK_OK = re.compile(r"^https://(www\.)?cisa\.gov/\S+$")
+CSAF_PATH = re.compile(r"^csaf_files/(OT|IT)/white/(\d{4})/([a-z]+)-(\d{2})-(\d{3})-(\d{2})\.json$")
 
 
-def fetch(url: str) -> bytes:
-	req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/rss+xml, application/xml"})
+def fetch(url: str, api: bool = False) -> bytes:
+	headers = {"User-Agent": USER_AGENT}
+	if api:
+		headers["Accept"] = "application/vnd.github+json"
+		token = os.environ.get("GITHUB_TOKEN")
+		if token:
+			headers["Authorization"] = "Bearer " + token
+	req = urllib.request.Request(url, headers=headers)
 	with urllib.request.urlopen(req, timeout=60) as resp:
 		return resp.read()
 
 
-def tag_for(link: str) -> str:
-	m = re.match(r"^https://(?:www\.)?cisa\.gov/news-events/([^/]+)/", link)
-	if m:
-		return TAGS.get(m.group(1), "other")
-	if re.match(r"^https://(?:www\.)?cisa\.gov/resources-tools/", link):
-		return "resource"
-	return "other"
-
-
-def clean_title(text: str) -> str:
-	# Algunos feeds traen entidades escapadas dos veces («&amp;amp;»): se deshace una vez.
-	text = html.unescape(text or "")
-	return re.sub(r"\s+", " ", text).strip()
-
-
-def parse_date(text: str):
-	# CISA usa años de dos cifras («Tue, 27 Oct 26 12:00:00 +0000»); email.utils lo resuelve.
+def iso(text: str):
+	"""«2026-11-03T06:00:00.000000Z» o «2026-11-03» → «2026-11-03T06:00:00Z» (UTC)."""
+	text = (text or "").strip()
+	if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
+		text += "T12:00:00Z"  # el KEV sólo da el día; CISA publica sus altas hacia el mediodía
 	try:
-		d = email.utils.parsedate_to_datetime((text or "").strip())
-	except (TypeError, ValueError, IndexError):
-		return None
-	if d is None:
+		d = dt.datetime.fromisoformat(text.replace("Z", "+00:00"))
+	except ValueError:
 		return None
 	if d.tzinfo is None:
 		d = d.replace(tzinfo=dt.timezone.utc)
-	return d.astimezone(dt.timezone.utc)
+	return d.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def parse_feed(raw: bytes, feed: dict) -> list:
-	root = ET.fromstring(raw)
-	channel = root.find("channel")
-	if channel is None:
-		raise ValueError("no es RSS 2.0")
-	base = root.get("{http://www.w3.org/XML/1998/namespace}base") or "https://www.cisa.gov/"
-	out = []
-	for item in channel.findall("item"):
-		title = clean_title(item.findtext("title"))
-		link = (item.findtext("link") or "").strip()
-		if link.startswith("/"):
-			link = base.rstrip("/") + link
-		date = parse_date(item.findtext("pubDate"))
-		if not title or len(title) > 300 or not LINK_OK.match(link) or date is None:
+def clean(text: str) -> str:
+	return re.sub(r"\s+", " ", text or "").strip()
+
+
+# ---------- Avisos CSAF ----------
+
+def newest_advisories(tree: dict) -> list:
+	"""Rutas de los avisos más recientes, por su identificador (año-día-número)."""
+	if tree.get("truncated"):
+		raise ValueError("el árbol de cisagov/CSAF llegó truncado")
+	this_year = dt.datetime.now(dt.timezone.utc).year
+	found = []
+	for node in tree.get("tree", []):
+		m = CSAF_PATH.match(node.get("path", ""))
+		if node.get("type") != "blob" or not m or int(m.group(2)) < this_year - 1:
 			continue
+		found.append(((m.group(4), m.group(5), m.group(6), m.group(3)), m.group(3), node["path"]))
+	found.sort(reverse=True)
+	return [(kind, path) for _, kind, path in found[:ADVISORIES_KEEP]]
+
+
+def advisory_item(kind: str, doc: dict):
+	d = doc.get("document", {})
+	if str(d.get("distribution", {}).get("tlp", {}).get("label", "")).upper() not in ("WHITE", "CLEAR"):
+		return None
+	title = clean(d.get("title"))
+	date = iso(d.get("tracking", {}).get("initial_release_date"))
+	link = ""
+	for ref in d.get("references", []):
+		url = str(ref.get("url", ""))
+		if ref.get("category") == "self" and LINK_OK.match(url) and "/news-events/" in url:
+			link = url
+			break
+	if not title or len(title) > 300 or not date or not link:
+		return None
+	tag = {"icsa": "ics", "icsma": "medical"}.get(kind, "advisory")
+	return {"title": title, "link": link, "date": date, "source": "cisa", "tag": tag}
+
+
+# ---------- Catálogo KEV ----------
+
+def kev_name(v: dict) -> str:
+	# «WordPress» + «WordPress Core» → «WordPress Core»; «Ivanti» + «Connect Secure» → «Ivanti Connect Secure».
+	vendor, product = clean(v.get("vendorProject")), clean(v.get("product"))
+	return product if product.lower().startswith(vendor.lower()) else clean(f"{vendor} {product}")
+
+
+def kev_items(kev: dict) -> list:
+	by_day = {}
+	for v in kev.get("vulnerabilities", []):
+		day = str(v.get("dateAdded", ""))
+		if re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
+			by_day.setdefault(day, []).append(v)
+	if not by_day:
+		raise ValueError("el KEV llegó vacío")
+	cutoff = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=KEV_DAYS)).strftime("%Y-%m-%d")
+	out = []
+	for day in sorted(by_day, reverse=True):
+		if day < cutoff:
+			break
+		vulns = sorted(by_day[day], key=lambda v: str(v.get("cveID", "")))
+		names = [kev_name(v) + f" ({v.get('cveID', '')})" for v in vulns[:3]]
+		more = f" and {len(vulns) - 3} more" if len(vulns) > 3 else ""
+		n = len(vulns)
+		head = "Known exploited vulnerability added to the KEV catalog" if n == 1 else f"{n} known exploited vulnerabilities added to the KEV catalog"
 		out.append({
-			"title": title,
-			"link": link,
-			"date": date.strftime("%Y-%m-%dT%H:%M:%SZ"),
-			"source": feed["source"],
-			"tag": tag_for(link),
+			"title": f"{head}: {', '.join(names)}{more}"[:300],
+			"link": KEV_PAGE,
+			"date": iso(day),
+			"source": "cisa",
+			"tag": "alert",
 		})
-	# Más recientes primero; a igual fecha se respeta el orden del feed (sort estable).
-	out.sort(key=lambda x: x["date"], reverse=True)
-	if len(out) < feed["min"]:
-		raise ValueError(f"sólo {len(out)} entradas válidas")
-	return out[: feed["keep"]]
+	return out
 
 
-def build(feeds_raw: dict) -> dict:
+def build() -> dict:
+	tree = json.loads(fetch(CSAF_TREE, api=True))
 	items, seen = [], set()
-	for feed in FEEDS:
-		for it in parse_feed(feeds_raw[feed["url"]], feed):
-			if it["link"] in seen:
-				continue
+	for kind, path in newest_advisories(tree):
+		it = advisory_item(kind, json.loads(fetch(CSAF_RAW + path)))
+		if it and it["link"] not in seen:
 			seen.add(it["link"])
 			items.append(it)
+	if len(items) < ADVISORIES_MIN:
+		raise ValueError(f"sólo {len(items)} avisos CSAF válidos")
+	items += kev_items(json.loads(fetch(KEV_JSON)))
+	# Más recientes primero; a igual fecha, los avisos antes que el resumen del KEV (sort estable).
 	items.sort(key=lambda x: x["date"], reverse=True)
-	return {"v": 1, "generated": None, "sources": SOURCES, "items": items}
+	return {"v": 1, "generated": None, "sources": SOURCES, "items": items[:TOTAL_KEEP]}
 
 
 def dump(doc: dict) -> str:
@@ -178,22 +217,14 @@ def main() -> int:
 	except (AttributeError, ValueError):
 		pass
 
-	raw = {}
-	for feed in FEEDS:
-		try:
-			raw[feed["url"]] = fetch(feed["url"])
-		except Exception as e:  # noqa: BLE001 — cualquier fallo de red deja el JSON anterior
-			print(f"ERROR al descargar {feed['url']}: {e}", file=sys.stderr)
-			return 1
 	try:
-		doc = build(raw)
-	except (ET.ParseError, ValueError) as e:
-		print(f"ERROR al parsear: {e}", file=sys.stderr)
+		doc = build()
+	except Exception as e:  # noqa: BLE001 — cualquier fallo deja el JSON anterior
+		print(f"ERROR: {e}", file=sys.stderr)
 		return 1
 
 	out = Path(a.out)
-	now = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-	doc["generated"] = now
+	doc["generated"] = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 	if out.exists():
 		try:
 			prev = json.loads(out.read_text(encoding="utf-8"))

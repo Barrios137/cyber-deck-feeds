@@ -2,7 +2,8 @@
 # público https://github.com/Barrios137/cyber-deck-feeds, junto con mirror.py en la raíz; la copia
 # de trabajo está en dev/cyber-deck/news-mirror.yml del repositorio de los widgets (idénticas).
 # El widget lee https://raw.githubusercontent.com/Barrios137/cyber-deck-feeds/main/feeds.json (CORS *).
-# Sólo publica título, enlace, fecha, fuente y etiqueta de fuentes de dominio público (CISA).
+# Sólo publica título, enlace, fecha, fuente y etiqueta, sacados de los repositorios oficiales de
+# datos de CISA en GitHub (cisagov/CSAF y cisagov/kev-data): cisa.gov da 403 a los runners.
 name: mirror
 on:
   schedule:
@@ -21,10 +22,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Leer los feeds de CISA
+      - name: Leer los datos de CISA
         id: parse
         run: python -I mirror.py --out feeds.json
         continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publicar si cambió
         if: steps.parse.outcome == 'success'
         run: |
@@ -40,7 +43,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const title = "El espejo no pudo leer los feeds de CISA";
+            const title = "El espejo no pudo leer los datos de CISA";
             const open = await github.rest.issues.listForRepo({ owner: context.repo.owner, repo: context.repo.repo, state: "open", labels: "mirror" });
             if (!open.data.some(i => i.title === title)) {
               await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, labels: ["mirror"],
