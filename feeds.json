@@ -1,4 +1,5 @@
-{"v":1,"generated":"2026-11-09T06:54:49Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"v":1,"generated":"2026-11-10T02:49:12Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"title":"3 known exploited vulnerabilities added to the KEV catalog: GPUStack (CVE-2026-102895), SignalWire FreeSwitch (CVE-2026-116779), OpenBSD OpenSSH (CVE-2026-123158)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-09T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Known exploited vulnerability added to the KEV catalog: SonicWall SonicOS SSLVPN (CVE-2026-19868)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-06T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Known exploited vulnerability added to the KEV catalog: Apple Multiple Products (CVE-2024-27834)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-04T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Known exploited vulnerability added to the KEV catalog: WordPress Core (CVE-2026-119977)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-03T12:00:00Z","source":"cisa","tag":"alert"},
@@ -54,7 +55,6 @@
 {"title":"Known exploited vulnerability added to the KEV catalog: Cisco Catalyst SD-WAN Manager (CVE-2026-76504)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-09-30T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Known exploited vulnerability added to the KEV catalog: Apple Multiple Products (CVE-2026-86950)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-09-29T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"2 known exploited vulnerabilities added to the KEV catalog: Citrix NetScaler (CVE-2026-88771), Citrix NetScaler (CVE-2026-88772)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-09-27T12:00:00Z","source":"cisa","tag":"alert"},
-{"title":"3 known exploited vulnerabilities added to the KEV catalog: Microsoft SharePoint (CVE-2026-65660), MikroTik RouterOS (CVE-2026-67279), WordPress Core (CVE-2026-87902)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-09-25T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Hitachi Energy RTU500 Product","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-293-05","date":"2026-09-01T00:00:00Z","source":"cisa","tag":"ics"},
 {"title":"Hitachi Energy MicroSCADA X SYS600 Product","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-293-04","date":"2026-09-01T00:00:00Z","source":"cisa","tag":"ics"}
 ]}
