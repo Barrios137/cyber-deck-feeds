@@ -1,4 +1,4 @@
-{"v":1,"generated":"2026-11-10T20:55:03Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"v":1,"generated":"2026-11-12T00:52:26Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
 {"title":"6 known exploited vulnerabilities added to the KEV catalog: Barracuda Networks Multiple Products (CVE-2026-111560), Openwave Messaging Limited Webtop Media Transcoder (CVE-2026-111793), Barracuda Networks Barracuda Email Security Gateway (ESG) (CVE-2026-116606) and 3 more","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-10T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"4 known exploited vulnerabilities added to the KEV catalog: GPUStack (CVE-2026-102895), SignalWire FreeSwitch (CVE-2026-116779), OpenBSD OpenSSH (CVE-2026-123158) and 1 more","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-09T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Known exploited vulnerability added to the KEV catalog: SonicWall SonicOS SSLVPN (CVE-2026-19868)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-06T12:00:00Z","source":"cisa","tag":"alert"},
@@ -55,7 +55,6 @@
 {"title":"Known exploited vulnerability added to the KEV catalog: Fortinet FortiMail (CVE-2026-104286)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-10-01T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Known exploited vulnerability added to the KEV catalog: Cisco Catalyst SD-WAN Manager (CVE-2026-76504)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-09-30T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Known exploited vulnerability added to the KEV catalog: Apple Multiple Products (CVE-2026-86950)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-09-29T12:00:00Z","source":"cisa","tag":"alert"},
-{"title":"2 known exploited vulnerabilities added to the KEV catalog: Citrix NetScaler (CVE-2026-88771), Citrix NetScaler (CVE-2026-88772)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-09-27T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Hitachi Energy RTU500 Product","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-293-05","date":"2026-09-01T00:00:00Z","source":"cisa","tag":"ics"},
 {"title":"Hitachi Energy MicroSCADA X SYS600 Product","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-293-04","date":"2026-09-01T00:00:00Z","source":"cisa","tag":"ics"}
 ]}
