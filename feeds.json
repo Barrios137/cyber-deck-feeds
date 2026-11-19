@@ -1,4 +1,5 @@
-{"v":1,"generated":"2026-11-18T07:44:13Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"v":1,"generated":"2026-11-19T00:33:10Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"title":"4 known exploited vulnerabilities added to the KEV catalog: Synology DiskStation Manager (DSM) (CVE-2024-10441), BerriAI LiteLLM (CVE-2026-40217), Apache Axis (CVE-2026-90436) and 1 more","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-18T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Known exploited vulnerability added to the KEV catalog: Perforce Puppet Enterprise (CVE-2026-115731)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-17T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Dorsett Controls InfoScan","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-01","date":"2026-11-17T06:00:00Z","source":"cisa","tag":"ics"},
 {"title":"2 known exploited vulnerabilities added to the KEV catalog: UnrealIRCd (CVE-2026-114713), Check Point Multiple Products (CVE-2026-123039)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-13T12:00:00Z","source":"cisa","tag":"alert"},
@@ -49,6 +50,5 @@
 {"title":"Siemens SIMATIC S7-1500 CPU 1518(F)-4 PN/DP MFP","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-295-11","date":"2026-10-13T00:00:00Z","source":"cisa","tag":"ics"},
 {"title":"Siemens SIMATIC S7 Webserver API","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-295-10","date":"2026-10-13T00:00:00Z","source":"cisa","tag":"ics"},
 {"title":"Siemens Industrial Edge Device Kit","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-295-09","date":"2026-10-13T00:00:00Z","source":"cisa","tag":"ics"},
-{"title":"5 known exploited vulnerabilities added to the KEV catalog: ProFTPD (CVE-2015-3306), ISC BIND (CVE-2015-5477), Apache Struts (CVE-2016-3081) and 2 more","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-10-08T12:00:00Z","source":"cisa","tag":"alert"},
-{"title":"Known exploited vulnerability added to the KEV catalog: Citrix NetScaler (CVE-2026-88779)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-10-04T12:00:00Z","source":"cisa","tag":"alert"}
+{"title":"5 known exploited vulnerabilities added to the KEV catalog: ProFTPD (CVE-2015-3306), ISC BIND (CVE-2015-5477), Apache Struts (CVE-2016-3081) and 2 more","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-10-08T12:00:00Z","source":"cisa","tag":"alert"}
 ]}
