@@ -1,4 +1,6 @@
-{"v":1,"generated":"2026-11-24T04:54:03Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"v":1,"generated":"2026-11-24T17:58:19Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"title":"Danfoss AK-SM 8xxA Series","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-328-03","date":"2026-11-24T06:00:00Z","source":"cisa","tag":"ics"},
+{"title":"AutomationDirect C-More EA9 Programming Software","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-328-01","date":"2026-11-24T06:00:00Z","source":"cisa","tag":"ics"},
 {"title":"2 known exploited vulnerabilities added to the KEV catalog: Project MONAI MONAI Label (CVE-2026-133968), N-able MailAssure (CVE-2026-134624)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-23T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"4 known exploited vulnerabilities added to the KEV catalog: SAP NetWeaver (CVE-2025-42884), Broadcom VMware vCenter (CVE-2026-123890), Apache Roller (CVE-2026-129448) and 1 more","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-20T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"libumqtt","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-323-03","date":"2026-11-19T06:00:00Z","source":"cisa","tag":"ics"},
@@ -9,6 +11,7 @@
 {"title":"Dorsett Controls InfoScan","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-01","date":"2026-11-17T06:00:00Z","source":"cisa","tag":"ics"},
 {"title":"2 known exploited vulnerabilities added to the KEV catalog: UnrealIRCd (CVE-2026-114713), Check Point Multiple Products (CVE-2026-123039)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-13T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"6 known exploited vulnerabilities added to the KEV catalog: Barracuda Networks Multiple Products (CVE-2026-111560), Openwave Messaging Limited Webtop Media Transcoder (CVE-2026-111793), Barracuda Networks Barracuda Email Security Gateway (ESG) (CVE-2026-116606) and 3 more","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-10T12:00:00Z","source":"cisa","tag":"alert"},
+{"title":"Schneider Electric EcoStruxure Power Build Rapsody software","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-328-02","date":"2026-11-10T08:00:00Z","source":"cisa","tag":"ics"},
 {"title":"Siemens meta-iot2050","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-11","date":"2026-11-10T00:00:00Z","source":"cisa","tag":"ics"},
 {"title":"Siemens Simcenter Femap","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-10","date":"2026-11-10T00:00:00Z","source":"cisa","tag":"ics"},
 {"title":"Siemens SIMATIC WinCC","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-09","date":"2026-11-10T00:00:00Z","source":"cisa","tag":"ics"},
@@ -46,8 +49,5 @@
 {"title":"2 known exploited vulnerabilities added to the KEV catalog: Ivanti Connect Secure (CVE-2026-104935), Microsoft Windows (CVE-2026-96951)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-10-13T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Siemens .NET Client Library for SIMATIC S7 Webserver API","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-02","date":"2026-10-13T00:00:00Z","source":"cisa","tag":"ics"},
 {"title":"Siemens RUGGEDCOM APE1808 Devices","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-295-18","date":"2026-10-13T00:00:00Z","source":"cisa","tag":"ics"},
-{"title":"Siemens Industrial Edge Devices","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-295-17","date":"2026-10-13T00:00:00Z","source":"cisa","tag":"ics"},
-{"title":"Siemens SIMATIC S7-1500 TM MFP","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-295-16","date":"2026-10-13T00:00:00Z","source":"cisa","tag":"ics"},
-{"title":"Siemens RUGGEDCOM CROSSBOW Station Access Controller","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-295-15","date":"2026-10-13T00:00:00Z","source":"cisa","tag":"ics"},
-{"title":"Siemens SIMATIC S7 PLCs Web Server","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-295-14","date":"2026-10-13T00:00:00Z","source":"cisa","tag":"ics"}
+{"title":"Siemens Industrial Edge Devices","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-295-17","date":"2026-10-13T00:00:00Z","source":"cisa","tag":"ics"}
 ]}
