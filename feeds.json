@@ -1,4 +1,5 @@
-{"v":1,"generated":"2026-11-23T07:54:50Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"v":1,"generated":"2026-11-24T04:54:03Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"title":"2 known exploited vulnerabilities added to the KEV catalog: Project MONAI MONAI Label (CVE-2026-133968), N-able MailAssure (CVE-2026-134624)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-23T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"4 known exploited vulnerabilities added to the KEV catalog: SAP NetWeaver (CVE-2025-42884), Broadcom VMware vCenter (CVE-2026-123890), Apache Roller (CVE-2026-129448) and 1 more","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-20T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"libumqtt","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-323-03","date":"2026-11-19T06:00:00Z","source":"cisa","tag":"ics"},
 {"title":"Elecbrakes EB2, VM1, ELBC2000","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-323-02","date":"2026-11-19T06:00:00Z","source":"cisa","tag":"ics"},
