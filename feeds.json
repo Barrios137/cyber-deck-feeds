@@ -1,4 +1,5 @@
-{"v":1,"generated":"2026-11-24T17:58:19Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"v":1,"generated":"2026-11-25T02:38:18Z","sources":{"cisa":{"name":"CISA","lang":"en","home":"https://www.cisa.gov/","license":"Public domain (17 U.S.C. § 105); KEV data CC0 1.0"}},"items":[
+{"title":"3 known exploited vulnerabilities added to the KEV catalog: Idunno AntiCsrf (CVE-2026-131914), Drupal Core (CVE-2026-132165), Optimizely Web Experimentation (CVE-2026-132224)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-24T12:00:00Z","source":"cisa","tag":"alert"},
 {"title":"Danfoss AK-SM 8xxA Series","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-328-03","date":"2026-11-24T06:00:00Z","source":"cisa","tag":"ics"},
 {"title":"AutomationDirect C-More EA9 Programming Software","link":"https://www.cisa.gov/news-events/ics-advisories/icsa-26-328-01","date":"2026-11-24T06:00:00Z","source":"cisa","tag":"ics"},
 {"title":"2 known exploited vulnerabilities added to the KEV catalog: Project MONAI MONAI Label (CVE-2026-133968), N-able MailAssure (CVE-2026-134624)","link":"https://www.cisa.gov/known-exploited-vulnerabilities-catalog","date":"2026-11-23T12:00:00Z","source":"cisa","tag":"alert"},
